@@ -81,6 +81,53 @@ outlines:
       where: true
       size: [cx, cy]
       bound: true
+  _standoffs:
+    - what: circle
+      where:
+        ref.aggregate.parts:
+          - matrix_pinky_top
+          - matrix_pinky_middle
+        shift: [-.5cx, 0]
+      radius: 1
+    - what: circle
+      where:
+        ref.aggregate.parts:
+          - matrix_pinky_bottom
+          - matrix_pinky_middle
+        shift: [-.5cx, 0]
+      radius: 1
+    - what: circle
+      where:
+        ref.aggregate.parts:
+          - matrix_ring_bottom
+          - matrix_middle_bottom
+        shift: [0, -1u]
+      radius: 1
+    - what: circle
+      where:
+        ref.aggregate.parts:
+          - thumb_c_only
+          - thumb_b_only
+        shift: [0, .5u]
+      radius: 1
+    - what: circle
+      where:
+        ref.aggregate.parts:
+          - matrix_middle_top
+          - matrix_middle_middle
+        shift: [-.5cx, 0]
+      radius: 1
+    - what: circle
+      where:
+        ref.aggregate.parts:
+          - matrix_index_top
+          - matrix_index_middle
+        shift: [.5cx, 0]
+      radius: 1
+  _switches:
+    - what: rectangle
+      where: true
+      size: [13.7, 12.7]
   _triangle:
     - what: polygon
       operation: add
@@ -99,14 +146,14 @@ outlines:
           shift: [1.75u, .1u]
         - ref: matrix_inner_top
           shift: [.5cx + pad, .5cy + pad]
-  wtriangle:
+  _wtriangle:
     - what: outline
       name: raw
     - what: outline
       name: _triangle
   smooth1:
     - what: outline
-      name: wtriangle
+      name: _wtriangle
       fillet: 1.5
   _micro:
     - what: rectangle
@@ -127,14 +174,25 @@ outlines:
           shift: [cx, .5cy + pad]
         - ref: matrix_inner_top
           shift: [4u, + 4u]
-  pcb:
+  pcb_demo:
     - what: outline
       name: smooth1
     - what: outline
       name: keys
       operation: subtract
     - what: outline
+      name: _switches
+    - what: outline
+      name: _standoffs
+      operation: stack
+    - what: outline
       name: _micro
+      operation: subtract
+  pcb:
+    - what: outline
+      name: smooth1
+    - what: outline
+      name: _standoffs
       operation: subtract
   sp:
     - what: outline
@@ -146,7 +204,10 @@ outlines:
       operation: subtract
       fillet: 1.5
     - what: outline
-      name: keys
+      name: _switches
+      operation: subtract
+    - what: outline
+      name: _standoffs
       operation: subtract
   sp_large:
     - what: polygon
@@ -163,13 +224,20 @@ outlines:
           shift: [-.5cx - pad, -.5cy - pad]
       fillet: 6
     - what: outline
-      name: keys
+      name: _switches
+      operation: subtract
+    - what: outline
+      name: _standoffs
       operation: subtract
 pcbs:
+  sp:
+    outlines:
+      main:
+        outline: sp
   fourne:
     outlines:
       main:
-        outline: smooth1
+        outline: pcb
     footprints:
       mcu:
         what: promicro_pretty
@@ -228,7 +296,7 @@ pcbs:
         where:
           ref: matrix_inner_bottom
           shift: [1.75cx, -1.2cy]
-          rotate: 180
+          rotate: -135
         params:
           neg: GND
       vias:
@@ -240,5 +308,5 @@ pcbs:
           net: "{{column_net}}"
 cases:
   bottom:
-    - name: smooth1
-      extrude: 1
+    - name: pcb
+      extrude: 3
