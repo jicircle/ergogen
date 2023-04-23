@@ -127,7 +127,11 @@ outlines:
   _switches:
     - what: rectangle
       where: true
-      size: [13.7, 12.7]
+      size: [13.8, 13.8]
+  _switchclips:
+    - what: rectangle
+      where: true
+      size: [14.5, 14.5]
   _triangle:
     - what: polygon
       operation: add
@@ -310,3 +314,31 @@ cases:
   bottom:
     - name: pcb
       extrude: 3
+  _switch:
+    - name: sp
+      extrude: 2.2
+  _switchclips_left:
+    - name: _switchclips
+      extrude: .9
+  _switchclips_right:
+    - name: _switchclips
+      extrude: 2.2
+  _switch_right:
+    - name: sp
+      extrude: 1.3
+  switchplate_left:
+    - what: case
+      name: _switch
+      operation: add
+    - what: case
+      name: _switchclips_left
+      operation: subtract
+  switchplate_right:
+    - what: case
+      name: _switch
+    - what: case
+      name: _switchclips_right
+      operation: subtract
+    - what: case
+      name: _switch_right
+
